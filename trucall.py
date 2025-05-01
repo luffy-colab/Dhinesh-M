@@ -1,6 +1,3 @@
-!pip install nest_asyncio
-
-import nest_asyncio
 import logging
 import requests
 import asyncio
@@ -13,21 +10,16 @@ from telegram.ext import (
     filters,
 )
 
-nest_asyncio.apply()  # ✅ This fixes the event loop error in Colab
-
-# Replace with your tokens
+# Set your tokens here
 TELEGRAM_BOT_TOKEN = "7932747849:AAGmctroqL4zsj-goO_TgKsgWPoEtA2sen0"
 NUMVERIFY_API_KEY = "5aa4f988a6cd9b0687cff9e4dd019f24"
 
-# Logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# /start command
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Send a phone number with country code (e.g. +14158586273).")
 
-# Handle phone number messages
 async def lookup_number(update: Update, context: ContextTypes.DEFAULT_TYPE):
     number = update.message.text.strip()
     if not number.startswith('+'):
@@ -55,7 +47,6 @@ async def lookup_number(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(reply)
 
-# Main bot function
 async def main():
     app = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
@@ -64,5 +55,5 @@ async def main():
     print("✅ Bot is running...")
     await app.run_polling()
 
-# Run it in Colab
-await main()
+if __name__ == "__main__":
+    asyncio.run(main())
